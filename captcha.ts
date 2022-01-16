@@ -19,7 +19,11 @@ const errorCode_ZH: errMap = {
 
 const APIServer = "https://sso-captcha.interactiveplus.org"
 
+interface CaptchaError {
+    errorCode: number;
+    ErrorDescription: string;
 
+}
 interface CaptchaFunc {
     GetCaptcha(scope: string, lang?: string): Promise<any>
     SubmitStatus(captchaID: string, secretPhrase: string, lang?: string): Promise<any>
@@ -45,7 +49,7 @@ class Captcha implements CaptchaFunc {
         return new Promise<any>((resolve, reject) => {
             axios.get(APIServer + '/captcha/' + captchaID + '/submitResult?phrase=' + phrase).then(
                 (response: AxiosResponse<any>) => {
-                    if (response.data.errorCode != 0) {
+                    if (response.data.errorCode != 0 && response.data != null) {
                         if (lang == "zh") response.data.errorDescription = errorCode_ZH[response.data.errorCode]
                         reject(response.data)
                     }
