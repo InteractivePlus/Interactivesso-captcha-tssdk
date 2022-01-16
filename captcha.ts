@@ -21,9 +21,9 @@ const APIServer = "https://sso-captcha.interactiveplus.org"
 
 
 interface CaptchaFunc {
-    GetCaptcha(scope: string, lang?: string): Promise<void>
-    SubmitStatus(captchaID: string, secretPhrase: string, lang?: string): Promise<void>
-    SubmitResult(captchaID: string, phrase: string, lang?: string): Promise<void>
+    GetCaptcha(scope: string, lang?: string): Promise<any>
+    SubmitStatus(captchaID: string, secretPhrase: string, lang?: string): Promise<any>
+    SubmitResult(captchaID: string, phrase: string, lang?: string): Promise<any>
 }
 class Captcha implements CaptchaFunc {
 
