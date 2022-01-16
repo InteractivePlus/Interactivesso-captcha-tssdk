@@ -20,11 +20,13 @@ const errorCode_ZH: errMap = {
 const APIServer = "https://sso-captcha.interactiveplus.org";
 axios.defaults.timeout = 3000;
 
+
+/*
 interface CaptchaError {
     errorCode: number;
     ErrorDescription: string;
+}*/
 
-}
 interface CaptchaFunc {
     GetCaptcha(scope: string, lang?: string): Promise<any>
     SubmitStatus(captchaID: string, secretPhrase: string, lang?: string): Promise<any>
