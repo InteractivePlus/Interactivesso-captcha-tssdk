@@ -17,7 +17,8 @@ const errorCode_ZH: errMap = {
     20: "参数错误"
 }
 
-const APIServer = "https://sso-captcha.interactiveplus.org"
+const APIServer = "https://sso-captcha.interactiveplus.org";
+axios.defaults.timeout = 3000;
 
 interface CaptchaError {
     errorCode: number;
