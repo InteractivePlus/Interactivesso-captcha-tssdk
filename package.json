@@ -1,4 +1,11 @@
 {
+  "name":"interactivesso-captcha-tssdk",
+  "version": "v1.0",
+  "main": "captcha.ts",
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/InteractivePlus/Interactivesso-captcha-tssdk.git"
+  },
   "dependencies": {
     "axios": "^0.24.0"
   }
