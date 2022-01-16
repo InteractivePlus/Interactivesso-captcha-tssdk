@@ -6,13 +6,17 @@ c.GetCaptcha("dasdasdasd").then(
     (value: any) => {
         console.log(value.captcha_data.jpegBase64)
 
-        c.SubmitStatus(value.captcha_id, "").then(
+        c.SubmitResult("11271588-76f1-46e4-8766-7ce60bc980ba", "11078").then(
             (v: any) => {
-                console.log(v)
+               if (v == true) {
+                   console.log("That's true")
+               }
             }
         ).catch(
             (reason: any) => {
-                console.log(reason)
+                if (reason == true) {
+                    console.log("WDNMD")
+                }
             }
         )
     }

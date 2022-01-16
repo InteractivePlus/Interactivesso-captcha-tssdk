@@ -35,25 +35,28 @@ class Captcha implements CaptchaFunc {
         return new Promise<any>((resolve, reject) => {
             axios.get(APIServer + '/captcha?scope=' + scope).then(
                 (response: AxiosResponse<any>) => {
-                    if (response.data.errorCode != 0 || response.status != 201){
+                    if (response.data.errorCode != 0 || response.status != 201) {
                         if (lang == "zh") response.data.errorDescription = errorCode_ZH[response.data.errorCode]
                         reject(response.data)
-                    } 
+                    }
                     resolve(response.data.data)
                 }
             )
         })
 
     }
-   SubmitResult(captchaID: string, phrase: string, lang?: string): Promise<any> {
+    SubmitResult(captchaID: string, phrase: string, lang?: string): Promise<any> {
         return new Promise<any>((resolve, reject) => {
             axios.get(APIServer + '/captcha/' + captchaID + '/submitResult?phrase=' + phrase).then(
                 (response: AxiosResponse<any>) => {
-                    if (response.data.errorCode != 0 && response.data != null) {
-                        if (lang == "zh") response.data.errorDescription = errorCode_ZH[response.data.errorCode]
-                        reject(response.data)
+                    if (response.data && response.data.length) {
+                        if (response.data.errorCode != 0) {
+                            if (lang == "zh") response.data.errorDescription = errorCode_ZH[response.data.errorCode]
+                            reject(response.data)
+                        }
+                    } else {
+                        resolve(true)
                     }
-                    resolve(true)
                 }
             )
         })
@@ -63,10 +66,10 @@ class Captcha implements CaptchaFunc {
         return new Promise<any>((resolve, reject) => {
             axios.get(APIServer + '/captcha/' + captchaID + '/submitStatus?secret_phrase=' + secretPhrase).then(
                 (response: AxiosResponse<any>) => {
-                    if (response.data.errorCode != 0 || response.status != 201){
+                    if (response.data.errorCode != 0 || response.status != 201) {
                         if (lang == "zh") response.data.errorDescription = errorCode_ZH[response.data.errorCode]
                         reject(response.data)
-                    } 
+                    }
                     resolve(response.data.data)
                 }
             )
