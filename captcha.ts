@@ -1,8 +1,16 @@
-import axios,{AxiosResponse} from 'axios';
+import axios, { AxiosResponse } from 'axios';
 
 
 
-const errorCode_ZH = {
+
+
+interface errMap {
+    [errcode: number]: string;
+}
+
+
+
+const errorCode_ZH: errMap = {
     1: "未知内部错误",
     2: "验证码不存在",
     14: "验证码或通信密钥不正确",
@@ -11,54 +19,35 @@ const errorCode_ZH = {
 
 const APIServer = "https://sso-captcha.interactiveplus.org"
 
-interface CaptchaInfo {
-    width: number;
-    height: number;
-    jpegBase64: string;
-    phraseLen: number;
-}
-
-interface CaptchaScope {
-    scope:  string;
-}
-
-
-interface CaptchaPayload<T> {
-    errorCode: number;
-    errorDescription?:   string;
-    credential?:         string;
-    errorParam?:         string;
-    data?:   T;
-}
 
 interface CaptchaFunc {
-    GetCaptcha(scope: string, lang?: string): Promise<CaptchaPayload<CaptchaInfo>>
-    SubmitStatus(captchaID: string, secretPhrase: string, lang?: string): Promise<CaptchaPayload<CaptchaScope>>
-    SubmitResult(captchaID: string, phrase: string, lang?: string): Promise<any>
+    GetCaptcha(scope: string, lang?: string): Promise<void>
+    SubmitStatus(captchaID: string, secretPhrase: string, lang?: string): Promise<void>
+    SubmitResult(captchaID: string, phrase: string, lang?: string): Promise<void>
 }
-class Captcha implements CaptchaFunc { 
-    GetCaptcha(scope: string, lang?: string): Promise<CaptchaPayload<CaptchaInfo>> {
-        return new Promise<CaptchaPayload<CaptchaInfo>>((resolve, reject) => {
-            axios.get(APIServer+'/captcha?scope='+scope).then(
-                (response: AxiosResponse<string>)=> {
-                    let ret: CaptchaPayload<CaptchaInfo> = JSON.parse(response.data);
-                    if (response.status != 201 || ret.errorCode != 0) {
-                        if (lang == "zh") ret.errorDescription = errorCode_ZH[ret.errorCode]
-                        reject(ret)
-                    }
-                    resolve(ret)
+class Captcha implements CaptchaFunc {
+
+    GetCaptcha(scope: string, lang?: string): Promise<any> {
+        return new Promise<any>((resolve, reject) => {
+            axios.get(APIServer + '/captcha?scope=' + scope).then(
+                (response: AxiosResponse<any>) => {
+                    if (response.data.errorCode != 0 || response.status != 201){
+                        if (lang == "zh") response.data.errorDescription = errorCode_ZH[response.data.errorCode]
+                        reject(response.data)
+                    } 
+                    resolve(response.data.data)
                 }
             )
         })
+
     }
-    SubmitResult(captchaID: string, phrase: string, lang?: string): Promise<any> {
+   SubmitResult(captchaID: string, phrase: string, lang?: string): Promise<any> {
         return new Promise<any>((resolve, reject) => {
-            axios.get(APIServer+'/captcha/'+captchaID+'/submitResult?phrase='+phrase).then(
-                (response: AxiosResponse<string>)=> {
-                    let ret: CaptchaPayload<string> = JSON.parse(response.data);
-                    if (ret.errorCode != 0) {
-                        if (lang == "zh") ret.errorDescription = errorCode_ZH[ret.errorCode]
-                        reject(ret)
+            axios.get(APIServer + '/captcha/' + captchaID + '/submitResult?phrase=' + phrase).then(
+                (response: AxiosResponse<any>) => {
+                    if (response.data.errorCode != 0) {
+                        if (lang == "zh") response.data.errorDescription = errorCode_ZH[response.data.errorCode]
+                        reject(response.data)
                     }
                     resolve(true)
                 }
@@ -66,20 +55,20 @@ class Captcha implements CaptchaFunc {
         })
     }
 
-    SubmitStatus(captchaID: string, secretPhrase: string, lang?: string): Promise<CaptchaPayload<CaptchaScope>> {
-        return new Promise<CaptchaPayload<CaptchaScope>>((resolve, reject) => {
-            axios.get(APIServer+'/captcha/'+captchaID+'/submitStatus?secret_phrase='+secretPhrase).then(
-                (response: AxiosResponse<string>)=> {
-                    let ret: CaptchaPayload<CaptchaScope> = JSON.parse(response.data);
-                    if (ret.errorCode != 0) {
-                        if (lang == "zh") ret.errorDescription = errorCode_ZH[ret.errorCode]
-                        reject(ret)
-                    }
-                    resolve(ret)
+    SubmitStatus(captchaID: string, secretPhrase: string, lang?: string): Promise<any> {
+        return new Promise<any>((resolve, reject) => {
+            axios.get(APIServer + '/captcha/' + captchaID + '/submitStatus?secret_phrase=' + secretPhrase).then(
+                (response: AxiosResponse<any>) => {
+                    if (response.data.errorCode != 0 || response.status != 201){
+                        if (lang == "zh") response.data.errorDescription = errorCode_ZH[response.data.errorCode]
+                        reject(response.data)
+                    } 
+                    resolve(response.data.data)
                 }
             )
         })
     }
+
 
 }
 
