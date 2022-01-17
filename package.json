@@ -1,6 +1,6 @@
 {
   "name": "@interactiveplus/interactivesso-captcha-tssdk",
-  "version": "1.0.0",
+  "version": "1.0.1",
   "description": "SDK for InteractiveSSO-Captcha Subsystem",
   "scripts": {
     "build": "tsc",
