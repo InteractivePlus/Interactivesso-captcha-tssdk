@@ -1,12 +1,28 @@
 {
-  "name":"interactivesso-captcha-tssdk",
-  "version": "v1.0",
-  "main": "captcha.ts",
+  "name": "@interactiveplus/interactivesso-captcha-tssdk",
+  "version": "1.0.0",
+  "description": "SDK for InteractiveSSO-Captcha Subsystem",
+  "scripts": {
+    "build": "tsc",
+    "test": "jest",
+    "lint": "npx eslint . --ext .js,.jsx,.ts,.tsx"
+  },
+  "main": "dist/index.js",
+  "author": "Meteors Liu",
+  "license": "MIT",
   "repository": {
     "type": "git",
     "url": "https://github.com/InteractivePlus/Interactivesso-captcha-tssdk.git"
   },
   "dependencies": {
     "axios": "^0.24.0"
+  },
+  "devDependencies": {
+    "@types/jest": "^27.4.0",
+    "@typescript-eslint/eslint-plugin": "^5.4.0",
+    "@typescript-eslint/parser": "^5.4.0",
+    "jest": "^27.4.7",
+    "ts-jest": "^27.0.7",
+    "typescript": "^4.5.2"
   }
 }
