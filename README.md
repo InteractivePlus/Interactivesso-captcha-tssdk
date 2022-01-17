@@ -7,4 +7,8 @@ Typescript SDK for Interactivesso Captcha System
 npm install --save @interactiveplus/interactivesso-captcha-tssdk
 ```
 
-## To Use
+## Development
+1. Clone this repository
+2. run `npm install`
+3. Edit code in `src/*`
+4. run `npm run build` =&gt; files will be generated in `dist/`
